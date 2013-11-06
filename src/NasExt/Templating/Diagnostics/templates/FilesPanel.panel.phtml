@@ -1,0 +1,68 @@
+<?php
+/**
+ * This file is part of the NasExt extensions of Nette Framework.
+ *
+ * Copyright (c) 2006, 2012 Patrik Votoček (http://patrik.votocek.cz)
+ * Nella Framework (http://nellafw.org)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ */
+
+namespace NasExt\Templating\Diagnostics;
+
+?>
+<style>#nette-debug .nella-TemplateFilesPanel .nette-inner {
+		width: 700px
+	}
+
+	#nette-debug .nette-ContainerPanel table {
+		width: 100%;
+		white-space: nowrap
+	}
+
+	#nette-debug .nette-ContainerPanel-parameters pre {
+		background: #FDF5CE;
+		padding: .4em .7em;
+		border: 1px dotted silver;
+		overflow: auto
+	}
+
+	#nette-debug .nette-ContainerPanel .created {
+		font-weight: bold
+	}
+
+	#nette-debug .nella-TemplateFilesPanel .yes {
+		color: green;
+		font-weight: bold
+	}</style>
+
+<div class="nella-TemplateFilesPanel">
+	<h1>Template Files</h1>
+
+	<div class="nette-inner">
+		<?php foreach ($files as $input => $list): ?>
+			<h2>
+				<a href='#nette-TemplateFilesPanel-row-<?php echo md5($input); ?>' class='nette-toggle-collapsed'><?php echo htmlspecialchars($input); ?></a>
+			</h2>
+
+			<table id='nette-TemplateFilesPanel-row-<?php echo md5($input); ?>' class='nette-collapsed'>
+				<?php
+				foreach ($list as $file) {
+					?>
+					<tr>
+						<td>
+							<?php
+							if (is_file($file)) {
+								echo '<span class="yes">' . $file . '</span>';
+							} else {
+								echo $file;
+							}
+							?>
+						</td>
+					</tr>
+				<?php } ?>
+			</table>
+		<?php endforeach ?>
+	</div>
+</div>
