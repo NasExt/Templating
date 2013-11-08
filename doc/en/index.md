@@ -1,7 +1,7 @@
 NasExt/Templating
 ===========================
 
-This lib is help for find layout, view, component templates and fileTemplates in Nette Framework.
+NasExt/Templating extension  is  to search template files for the layout, view, component  templates and single fileTemplates in Nette Framework.
 
 Requirements
 ------------
@@ -32,17 +32,19 @@ services:
 	myTemplateFilesFormatter: App\MyTemplateFilesFormatter
 
 nasext.templating:
-	debugger :TRUE
-	dirList: [%myThemeDir%, %secondThemeDir%]
+	debugger: TRUE
+	directories: [%myThemeDir%, %secondThemeDir%]
 	formatter: @myTemplateFilesFormatter
 ```
 
 - debugger: enable debugBar, default is %debugMode%
-- dirList: array of directories where formatter find templates, default is %appDir%
-- formatter: set custom formatter implements NasExt\Templating\ITemplateFilesFormatter like [this](https://gist.github.com/duskohu/7364973) else enable default formatter
+- directories: array of directories where formatter find templates, default is %appDir%
+- formatter:
+If you do not want to use the default formatter, you can add your own formateur like [this](https://gist.github.com/duskohu/7364973). Suffice formatter register as a service and add to parameter formatter of config.
+If you set a custom formatter do not forget to implement   NasExt\Templating\ITemplateFilesFormatter.
 
 ## Use
-Inject service
+First step is to inject services TemplateFilesFormatter
 ```php
 /** @var \NasExt\Templating\ITemplateFilesFormatter */
 protected $templateFilesFormatter;
@@ -57,7 +59,9 @@ public function injectTemplateFilesFormatter(\NasExt\Templating\ITemplateFilesFo
 }
 ```
 
-Formats layout template file names
+###Formats layout template file names
+
+For formatting the layout presenter suffices to rewrite formatLayoutTemplateFiles method and call the method: formatLayoutTemplateFiles of TemplateFilesFormatter
 ```php
 /**
  * Formats layout template file names.
@@ -71,7 +75,9 @@ public function formatLayoutTemplateFiles()
 }
 ```
 
-Formats layout template file names
+###Formats view template file names
+
+To format the presenter view suffices to rewrite formatTemplateFiles method and call the method: formatTemplateFiles of TemplateFilesFormatter
 ```php
 /**
  * Formats view template file names.
@@ -84,67 +90,80 @@ public function formatTemplateFiles()
 }
 ```
 
-Formats component template file names
+###Formats component template file names
+
+For formatting template components suffices to call a method: formatComponentTemplateFiles of TemplateFilesFormatter.
 ```php
 $reflection = $this->getReflection();
 $name = $reflection->getShortName();
 
 $formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
-$files = $formatter->getTemplateFile();
+$fileTemplate = $formatter->getTemplateFile();
 ```
 
-Format FileTemplate Files
+###Format FileTemplate Files
+
+Also you can search fileTemplates used for this purpose method: formatFileTemplateFiles of TemplateFilesFormatter
 ```php
-$formatter = $this->templateFilesFormatter->formatFileTemplateFiles('components/emails/newUser.latte');
+$formatter = $this->templateFilesFormatter->formatFileTemplateFiles('emails/newUser.latte');
 $fileTemplate = $formatter->getTemplateFile();
 ```
 
 All method return NasExt\Templating\Formater so you can add additional file/files.
+####Example - BaseControl
 ```php
-/** @var string */
-protected $templateFile;
-
-/**
- * @param  string|NULL
- * @return ITemplate
- */
-protected function createTemplate($class = NULL)
+class BaseControl extends Nette\Application\UI\Control
 {
-	$template = parent::createTemplate($class);
-	$template->setFile($this->getTemplateFilePath());
-	return $template;
-}
+	/** @var string */
+	protected $templateFile;
 
-/**
- * @return string
- */
-protected function getTemplateFilePath()
-{
-	$reflection = $this->getReflection();
-	$dir = dirname($reflection->getFileName());
-	$name = $reflection->getShortName();
-	$basFile = $dir . DIRECTORY_SEPARATOR . $name . '.latte';
-
-
-	if ($this->templateFile) {
-		$file = $templateFile = $this->templateFile;
-	} else {
-		$file = $basFile;
+	/**
+	 * Create template for all controls
+	 * @param  string|NULL
+	 * @return ITemplate
+	 */
+	protected function createTemplate($class = NULL)
+	{
+		$template = parent::createTemplate($class);
+		$template->setFile($this->getTemplateFilePath());
+		return $template;
 	}
 
+	/**
+	 * @return string
+	 */
+	protected function getTemplateFilePath()
+	{
+		$reflection = $this->getReflection();
+		$dir = dirname($reflection->getFileName());
+		$name = $reflection->getShortName();
+		$basFile = $dir . DIRECTORY_SEPARATOR . $name . '.latte';
 
-	if ($this->templateFilesFormatter) {
-		$formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
 
-		$formatter->addFile($basFile);
 		if ($this->templateFile) {
-			$formatter->addFile($this->templateFile, TRUE);
+			$file = $templateFile = $this->templateFile;
+		} else {
+			$file = $basFile;
 		}
 
-		$file = $formatter->getTemplateFile();
-	}
 
-	return $file;
+		if ($this->templateFilesFormatter) {
+			// Format component TemplateFiles
+			$formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
+
+			// Add more files to the end of the list
+			$formatter->addFile($basFile);
+			if ($this->templateFile) {
+				// Add more files to the beginning of the list
+				$formatter->addFile($this->templateFile, TRUE);
+			}
+
+			// Get the first active file from list
+			$file = $formatter->getTemplateFile();
+		}
+
+		return $file;
+	}
 }
 ```
 

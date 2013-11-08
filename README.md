@@ -1,7 +1,7 @@
 NasExt/Templating
 ===========================
 
-This lib is help for find layout, view, component templates and fileTemplates in Nette Framework.
+NasExt/Templating extension  is  to search template files for the layout, view, component  templates and single fileTemplates in Nette Framework.
 
 Requirements
 ------------
