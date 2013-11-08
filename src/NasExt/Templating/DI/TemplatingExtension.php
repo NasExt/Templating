@@ -35,7 +35,7 @@ class TemplatingExtension extends CompilerExtension
 
 	/** @var array */
 	public $defaults = array(
-		'dirList' => array('%appDir%'),
+		'directories' => array('%appDir%'),
 		'formatter' => FALSE,
 		'debugger' => '%debugMode%',
 	);
@@ -59,7 +59,7 @@ class TemplatingExtension extends CompilerExtension
 			$formatter = $definition->setClass('NasExt\Templating\TemplateFilesFormatter');
 		}
 
-		foreach ($config['dirList'] as $key => $dir) {
+		foreach ($config['directories'] as $key => $dir) {
 			$formatter->addSetup('addDir', array($dir, $key + 1));
 		}
 
