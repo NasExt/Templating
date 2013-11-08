@@ -53,7 +53,7 @@ namespace NasExt\Templating\Diagnostics;
 					<tr>
 						<td>
 							<?php
-							if (is_file($file)) {
+							if (file_exists($file)) {
 								echo '<span class="yes">' . $file . '</span>';
 							} else {
 								echo $file;

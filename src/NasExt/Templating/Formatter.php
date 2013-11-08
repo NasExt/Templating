@@ -50,22 +50,14 @@ class Formatter extends Object
 
 
 	/**
-	 * @return array
-	 */
-	public function getFiles()
-	{
-		return $this->files;
-	}
-
-
-	/**
 	 * @param string $file
+	 * @param bool $onTop
 	 * @return Formatter $this
 	 */
-	public function addFile($file)
+	public function addFile($file, $onTop = FALSE)
 	{
 		if ($this->logger) {
-			$this->logger->logFiles($this->name, array($file));
+			$this->logger->logFiles($this->name, array($file), $onTop);
 		}
 		$this->files[] = $file;
 		return $this;
@@ -74,12 +66,13 @@ class Formatter extends Object
 
 	/**
 	 * @param array $files
+	 * @param bool $onTop
 	 * @return Formatter $this
 	 */
-	public function addFiles($files)
+	public function addFiles($files, $onTop = FALSE)
 	{
 		foreach ($files as $file) {
-			$this->addFile($file);
+			$this->addFile($file, $onTop);
 		}
 		return $this;
 	}
@@ -91,5 +84,47 @@ class Formatter extends Object
 	public function getName()
 	{
 		return $this->name;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getFiles()
+	{
+		return $this->files;
+	}
+
+
+	/**
+	 * Return first existing file from files
+	 * @return string|bool
+	 */
+	public function getTemplateFile()
+	{
+		foreach ($this->files as $file) {
+			if (is_file($file)) {
+				return $file;
+				break;
+			}
+		}
+		return FALSE;
+	}
+
+
+	/**
+	 * Return all existing files from files
+	 * @return array
+	 */
+	public function getTemplateFiles()
+	{
+		$templateFiles = array();
+
+		foreach ($this->files as $file) {
+			if (is_file($file)) {
+				$templateFiles[] = $file;
+			}
+		}
+		return $templateFiles;
 	}
 }

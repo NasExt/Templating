@@ -22,6 +22,7 @@ interface IFilesFormatterLogger
 	/**
 	 * @param string $name
 	 * @param array $files
+	 * @param bool $onTop
 	 */
-	public function logFiles($name, array $files);
+	public function logFiles($name, array $files, $onTop = FALSE);
 }

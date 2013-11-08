@@ -90,28 +90,63 @@ $reflection = $this->getReflection();
 $name = $reflection->getShortName();
 
 $formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
-$files = $formatter->getFiles();
-foreach ($files as $file) {
-	if (is_file($file)) {
-		$template->setFile($file);
-		break;
-	}
-}
+$files = $formatter->getTemplateFile();
 ```
 
 Format FileTemplate Files
 ```php
 $formatter = $this->templateFilesFormatter->formatFileTemplateFiles('components/emails/newUser.latte');
-$files = $formatter->getFiles();
-foreach ($files as $file) {
-	if (is_file($file)) {
-		$fileTemplate = $file;
-		break;
-	}
-}
+$fileTemplate = $formatter->getTemplateFile();
 ```
 
 All method return NasExt\Templating\Formater so you can add additional file/files.
+```php
+/** @var string */
+protected $templateFile;
+
+/**
+ * @param  string|NULL
+ * @return ITemplate
+ */
+protected function createTemplate($class = NULL)
+{
+	$template = parent::createTemplate($class);
+	$template->setFile($this->getTemplateFilePath());
+	return $template;
+}
+
+/**
+ * @return string
+ */
+protected function getTemplateFilePath()
+{
+	$reflection = $this->getReflection();
+	$dir = dirname($reflection->getFileName());
+	$name = $reflection->getShortName();
+	$basFile = $dir . DIRECTORY_SEPARATOR . $name . '.latte';
+
+
+	if ($this->templateFile) {
+		$file = $templateFile = $this->templateFile;
+	} else {
+		$file = $basFile;
+	}
+
+
+	if ($this->templateFilesFormatter) {
+		$formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
+
+		$formatter->addFile($basFile);
+		if ($this->templateFile) {
+			$formatter->addFile($this->templateFile, TRUE);
+		}
+
+		$file = $formatter->getTemplateFile();
+	}
+
+	return $file;
+}
+```
 
 -----
 
