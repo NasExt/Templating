@@ -36,7 +36,11 @@ class FilesPanel extends Object implements IBarPanel, IFilesFormatterLogger
 	 */
 	public function logFiles($name, array $files)
 	{
-		$this->files[$name] = $files;
+		if (array_key_exists($name, $this->files)) {
+			$this->files[$name] = array_merge($this->files[$name], $files);
+		} else {
+			$this->files[$name] = $files;
+		}
 	}
 
 

@@ -69,7 +69,7 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 	 * Formats layout template file names
 	 * @param string $presenterName
 	 * @param string $layout
-	 * @return array
+	 * @return Formatter
 	 */
 	public function formatLayoutTemplateFiles($presenterName, $layout = 'layout')
 	{
@@ -110,11 +110,7 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 			$files = array_merge($files, $generator($dir));
 		}
 
-		if ($this->logger) {
-			$this->logger->logFiles("$presenterName:$layout", $files);
-		}
-
-		return $files;
+		return new Formatter("$presenterName:$layout", $files, $this->logger);
 	}
 
 
@@ -122,7 +118,7 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 	 * Formats view template file names
 	 * @param string $presenterName
 	 * @param string $presenterView
-	 * @return array
+	 * @return Formatter
 	 */
 	public function formatTemplateFiles($presenterName, $presenterView)
 	{
@@ -165,11 +161,7 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 			$files = array_merge($files, $generator($dir));
 		}
 
-		if ($this->logger) {
-			$this->logger->logFiles("$presenterName:$presenterView", $files);
-		}
-
-		return $files;
+		return new Formatter("$presenterName:$presenterView", $files, $this->logger);
 	}
 
 
@@ -178,7 +170,7 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 	 * @param string $presenterName
 	 * @param string $presenterView
 	 * @param string $controlClass
-	 * @return array
+	 * @return Formatter
 	 */
 	public function formatComponentTemplateFiles($presenterName, $presenterView, $controlClass)
 	{
@@ -221,18 +213,14 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 			$files = array_merge($files, $generator($dir));
 		}
 
-		if ($this->logger) {
-			$this->logger->logFiles("$presenterName:$presenterView:$controlClass", $files);
-		}
-
-		return $files;
+		return new Formatter("$presenterName:$presenterView:$controlClass", $files, $this->logger);
 	}
 
 
 	/**
 	 * Format FileTemplate Files
 	 * @param string $template
-	 * @return array
+	 * @return Formatter
 	 */
 	public function formatFileTemplateFiles($template)
 	{
@@ -242,10 +230,6 @@ class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
 			$files[] = $dir . "/templates/$template";
 		}
 
-		if ($this->logger) {
-			$this->logger->logFiles(substr(strrchr($template, '/'), 1), $files);
-		}
-
-		return $files;
+		return new Formatter(substr(strrchr($template, '/'), 1), $files, $this->logger);
 	}
 }

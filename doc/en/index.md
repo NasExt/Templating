@@ -39,7 +39,7 @@ nasext.templating:
 
 - debugger: enable debugBar, default is %debugMode%
 - dirList: array of directories where formatter find templates, default is %appDir%
-- formatter: set custom formatter implements NasExt\Templating\ITemplateFilesFormatter else enable default formatter
+- formatter: set custom formatter implements NasExt\Templating\ITemplateFilesFormatter like [this](https://gist.github.com/duskohu/7364973) else enable default formatter
 
 ## Use
 Inject service
@@ -66,8 +66,8 @@ Formats layout template file names
 public function formatLayoutTemplateFiles()
 {
 	parent::formatLayoutTemplateFiles();
-	$list = $this->templateFilesFormatter->formatLayoutTemplateFiles($this->name, $this->layout);
-	return $list;
+	$formatter = $this->templateFilesFormatter->formatLayoutTemplateFiles($this->name, $this->layout);
+	return $formatter->getFiles();
 }
 ```
 
@@ -79,8 +79,8 @@ Formats layout template file names
  */
 public function formatTemplateFiles()
 {
-	$list = $this->templateFilesFormatter->formatTemplateFiles($this->name, $this->view);
-	return $list;
+	$formatter = $this->templateFilesFormatter->formatTemplateFiles($this->name, $this->view);
+	return $formatter->getFiles();
 }
 ```
 
@@ -89,7 +89,8 @@ Formats component template file names
 $reflection = $this->getReflection();
 $name = $reflection->getShortName();
 
-$files = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
+$formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
+$files = $formatter->getFiles();
 foreach ($files as $file) {
 	if (is_file($file)) {
 		$template->setFile($file);
@@ -100,7 +101,8 @@ foreach ($files as $file) {
 
 Format FileTemplate Files
 ```php
-$files = $this->templateFilesFormatter->formatFileTemplateFiles('components/emails/newUser.latte');
+$formatter = $this->templateFilesFormatter->formatFileTemplateFiles('components/emails/newUser.latte');
+$files = $formatter->getFiles();
 foreach ($files as $file) {
 	if (is_file($file)) {
 		$fileTemplate = $file;
@@ -108,6 +110,8 @@ foreach ($files as $file) {
 	}
 }
 ```
+
+All method return NasExt\Templating\Formater so you can add additional file/files.
 
 -----
 
