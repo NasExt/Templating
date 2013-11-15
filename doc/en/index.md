@@ -70,8 +70,8 @@ For formatting the layout presenter suffices to rewrite formatLayoutTemplateFile
 public function formatLayoutTemplateFiles()
 {
 	parent::formatLayoutTemplateFiles();
-	$formatter = $this->templateFilesFormatter->formatLayoutTemplateFiles($this->name, $this->layout);
-	return $formatter->getFiles();
+	$filesList = $this->templateFilesFormatter->formatLayoutTemplateFiles($this->name, $this->layout);
+	return $filesList->getFiles();
 }
 ```
 
@@ -85,8 +85,8 @@ To format the presenter view suffices to rewrite formatTemplateFiles method and 
  */
 public function formatTemplateFiles()
 {
-	$formatter = $this->templateFilesFormatter->formatTemplateFiles($this->name, $this->view);
-	return $formatter->getFiles();
+	$filesList = $this->templateFilesFormatter->formatTemplateFiles($this->name, $this->view);
+	return $filesList->getFiles();
 }
 ```
 
@@ -97,19 +97,19 @@ For formatting template components suffices to call a method: formatComponentTem
 $reflection = $this->getReflection();
 $name = $reflection->getShortName();
 
-$formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
-$fileTemplate = $formatter->getTemplateFile();
+$filesList = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
+$fileTemplate = $filesList->getTemplateFile();
 ```
 
 ###Format FileTemplate Files
 
 Also you can search fileTemplates used for this purpose method: formatFileTemplateFiles of TemplateFilesFormatter
 ```php
-$formatter = $this->templateFilesFormatter->formatFileTemplateFiles('emails/newUser.latte');
-$fileTemplate = $formatter->getTemplateFile();
+$filesList = $this->templateFilesFormatter->formatFileTemplateFiles('emails/newUser.latte');
+$fileTemplate = $filesList->getTemplateFile();
 ```
 
-All method return NasExt\Templating\Formater so you can add additional file/files.
+All method return NasExt\Templating\FilesList so you can add additional file/files.
 ####Example - BaseControl
 ```php
 class BaseControl extends Nette\Application\UI\Control
@@ -149,17 +149,17 @@ class BaseControl extends Nette\Application\UI\Control
 
 		if ($this->templateFilesFormatter) {
 			// Format component TemplateFiles
-			$formatter = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
+			$filesList = $this->templateFilesFormatter->formatComponentTemplateFiles($this->presenter->name, $this->presenter->view, $name);
 
 			// Add more files to the end of the list
-			$formatter->addFile($basFile);
+			$filesList->addFile($basFile);
 			if ($this->templateFile) {
 				// Add more files to the beginning of the list
-				$formatter->addFile($this->templateFile, TRUE);
+				$filesList->addFile($this->templateFile, TRUE);
 			}
 
 			// Get the first active file from list
-			$file = $formatter->getTemplateFile();
+			$file = $filesList->getTemplateFile();
 		}
 
 		return $file;

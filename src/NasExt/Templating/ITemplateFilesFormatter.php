@@ -23,7 +23,7 @@ interface ITemplateFilesFormatter
 	 * Formats layout template file names
 	 * @param string $presenterName
 	 * @param string $layout
-	 * @return Formatter
+	 * @return FilesList
 	 */
 	public function formatLayoutTemplateFiles($presenterName, $layout = 'layout');
 
@@ -32,7 +32,7 @@ interface ITemplateFilesFormatter
 	 * Formats view template file names
 	 * @param string $presenterName
 	 * @param string $presenterView
-	 * @return Formatter
+	 * @return FilesList
 	 */
 	public function formatTemplateFiles($presenterName, $presenterView);
 
@@ -42,7 +42,7 @@ interface ITemplateFilesFormatter
 	 * @param string $presenterName
 	 * @param string $presenterView
 	 * @param string $controlClass
-	 * @return Formatter
+	 * @return FilesList
 	 */
 	public function formatComponentTemplateFiles($presenterName, $presenterView, $controlClass);
 
@@ -50,7 +50,7 @@ interface ITemplateFilesFormatter
 	/**
 	 * Format FileTemplate Files
 	 * @param string $template
-	 * @return Formatter
+	 * @return FilesList
 	 */
 	public function formatFileTemplateFiles($template);
 

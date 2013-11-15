@@ -13,11 +13,11 @@ namespace NasExt\Templating;
 use Nette\Object;
 
 /**
- * Formatter
+ * FilesList
  *
  * @author Dusan Hudak
  */
-class Formatter extends Object
+class FilesList extends Object
 {
 	/** @var  array */
 	private $files;
@@ -33,7 +33,7 @@ class Formatter extends Object
 	 * @param array $files
 	 * @param string $name
 	 * @param IFilesFormatterLogger $logger
-	 * @return Formatter
+	 * @return FilesList
 	 */
 	public function __construct($name, array $files, IFilesFormatterLogger $logger)
 	{
@@ -52,7 +52,7 @@ class Formatter extends Object
 	/**
 	 * @param string $file
 	 * @param bool $onTop
-	 * @return Formatter $this
+	 * @return FilesList $this
 	 */
 	public function addFile($file, $onTop = FALSE)
 	{
@@ -67,7 +67,7 @@ class Formatter extends Object
 	/**
 	 * @param array $files
 	 * @param bool $onTop
-	 * @return Formatter $this
+	 * @return FilesList $this
 	 */
 	public function addFiles($files, $onTop = FALSE)
 	{
