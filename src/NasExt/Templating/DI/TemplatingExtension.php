@@ -35,7 +35,7 @@ class TemplatingExtension extends CompilerExtension
 
 	/** @var array */
 	public $defaults = array(
-		'directories' => array('%appDir%'),
+		'directories' => '%appDir%',
 		'formatter' => FALSE,
 		'debugger' => '%debugMode%',
 	);
