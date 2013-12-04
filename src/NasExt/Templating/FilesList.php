@@ -32,10 +32,10 @@ class FilesList extends Object
 	/**
 	 * @param array $files
 	 * @param string $name
-	 * @param IFilesFormatterLogger $logger
+	 * @param IFilesFormatterLogger|NULL $logger
 	 * @return FilesList
 	 */
-	public function __construct($name, array $files, IFilesFormatterLogger $logger)
+	public function __construct($name, array $files, $logger = NULL)
 	{
 		$this->name = $name;
 		$this->files = $files;
