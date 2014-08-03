@@ -19,112 +19,109 @@ use Nette\Object;
  */
 class FilesList extends Object
 {
-	/** @var  array */
-	private $files;
+    /** @var  array */
+    private $files;
 
-	/** @var  IFilesFormatterLogger */
-	private $logger;
+    /** @var  IFilesFormatterLogger */
+    private $logger;
 
-	/** @var  string */
-	private $name;
+    /** @var  string */
+    private $name;
 
-
-	/**
+    /**
 	 * @param array $files
 	 * @param string $name
 	 * @param IFilesFormatterLogger|NULL $logger
 	 * @return FilesList
 	 */
-	public function __construct($name, array $files, $logger = NULL)
-	{
-		$this->name = $name;
-		$this->files = $files;
-		$this->logger = $logger;
+    public function __construct($name, array $files, $logger = null)
+    {
+        $this->name = $name;
+        $this->files = $files;
+        $this->logger = $logger;
 
-		if ($this->logger) {
-			$this->logger->logFiles($name, $files);
-		}
+        if ($this->logger) {
+            $this->logger->logFiles($name, $files);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-
-	/**
+    /**
 	 * @param string $file
 	 * @param bool $onTop
 	 * @return FilesList $this
 	 */
-	public function addFile($file, $onTop = FALSE)
-	{
-		if ($this->logger) {
-			$this->logger->logFiles($this->name, array($file), $onTop);
-		}
-		$this->files[] = $file;
-		return $this;
-	}
+    public function addFile($file, $onTop = false)
+    {
+        if ($this->logger) {
+            $this->logger->logFiles($this->name, array($file), $onTop);
+        }
+        $this->files[] = $file;
 
+        return $this;
+    }
 
-	/**
+    /**
 	 * @param array $files
 	 * @param bool $onTop
 	 * @return FilesList $this
 	 */
-	public function addFiles($files, $onTop = FALSE)
-	{
-		foreach ($files as $file) {
-			$this->addFile($file, $onTop);
-		}
-		return $this;
-	}
+    public function addFiles($files, $onTop = false)
+    {
+        foreach ($files as $file) {
+            $this->addFile($file, $onTop);
+        }
 
+        return $this;
+    }
 
-	/**
+    /**
 	 * @return string
 	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    public function getName()
+    {
+        return $this->name;
+    }
 
-
-	/**
+    /**
 	 * @return array
 	 */
-	public function getFiles()
-	{
-		return $this->files;
-	}
+    public function getFiles()
+    {
+        return $this->files;
+    }
 
-
-	/**
+    /**
 	 * Return first existing file from files
 	 * @return string|bool
 	 */
-	public function getTemplateFile()
-	{
-		foreach ($this->files as $file) {
-			if (is_file($file)) {
-				return $file;
-				break;
-			}
-		}
-		return FALSE;
-	}
+    public function getTemplateFile()
+    {
+        foreach ($this->files as $file) {
+            if (is_file($file)) {
+                return $file;
+                break;
+            }
+        }
 
+        return FALSE;
+    }
 
-	/**
+    /**
 	 * Return all existing files from files
 	 * @return array
 	 */
-	public function getTemplateFiles()
-	{
-		$templateFiles = array();
+    public function getTemplateFiles()
+    {
+        $templateFiles = array();
 
-		foreach ($this->files as $file) {
-			if (is_file($file)) {
-				$templateFiles[] = $file;
-			}
-		}
-		return $templateFiles;
-	}
+        foreach ($this->files as $file) {
+            if (is_file($file)) {
+                $templateFiles[] = $file;
+            }
+        }
+
+        return $templateFiles;
+    }
 }
