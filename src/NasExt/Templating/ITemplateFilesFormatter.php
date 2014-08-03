@@ -19,53 +19,48 @@ namespace NasExt\Templating;
  */
 interface ITemplateFilesFormatter
 {
-	/**
+    /**
 	 * Formats layout template file names
 	 * @param string $presenterName
 	 * @param string $layout
 	 * @return FilesList
 	 */
-	public function formatLayoutTemplateFiles($presenterName, $layout = 'layout');
+    public function formatLayoutTemplateFiles($presenterName, $layout = 'layout');
 
-
-	/**
+    /**
 	 * Formats view template file names
 	 * @param string $presenterName
 	 * @param string $presenterView
 	 * @return FilesList
 	 */
-	public function formatTemplateFiles($presenterName, $presenterView);
+    public function formatTemplateFiles($presenterName, $presenterView);
 
-
-	/**
+    /**
 	 * Formats component template file names
 	 * @param string $presenterName
 	 * @param string $presenterView
 	 * @param string $controlClass
 	 * @return FilesList
 	 */
-	public function formatComponentTemplateFiles($presenterName, $presenterView, $controlClass);
+    public function formatComponentTemplateFiles($presenterName, $presenterView, $controlClass);
 
-
-	/**
+    /**
 	 * Format FileTemplate Files
 	 * @param string $template
 	 * @return FilesList
 	 */
-	public function formatFileTemplateFiles($template);
+    public function formatFileTemplateFiles($template);
 
-
-	/**
+    /**
 	 * @param IFilesFormatterLogger $logger
 	 * @return TemplateFilesFormatter
 	 */
-	public function setLogger(IFilesFormatterLogger $logger);
+    public function setLogger(IFilesFormatterLogger $logger);
 
-
-	/**
+    /**
 	 * @param string $dir
 	 * @param int $priority
 	 * @return TemplateFilesFormatter
 	 */
-	public function addDir($dir, $priority = 5);
+    public function addDir($dir, $priority = 5);
 }

@@ -19,10 +19,10 @@ namespace NasExt\Templating;
  */
 interface IFilesFormatterLogger
 {
-	/**
+    /**
 	 * @param string $name
 	 * @param array $files
 	 * @param bool $onTop
 	 */
-	public function logFiles($name, array $files, $onTop = FALSE);
+    public function logFiles($name, array $files, $onTop = false);
 }
