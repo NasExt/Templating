@@ -10,15 +10,17 @@
 
 namespace NasExt\Templating;
 
-use Nette\Object;
+use Nette\SmartObject;
 
 /**
  * FilesList
  *
  * @author Dusan Hudak
  */
-class FilesList extends Object
+class FilesList
 {
+	use SmartObject;
+
 	/** @var  array */
 	private $files;
 

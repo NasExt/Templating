@@ -16,7 +16,7 @@ use NasExt\Templating\ITemplateFilesFormatter;
 use Nette\Diagnostics\Bar;
 use Nette\Diagnostics\Debugger;
 use Nette\Diagnostics\IBarPanel;
-use Nette\Object;
+use Nette\SmartObject;
 
 /**
  * FilesPanel
@@ -24,8 +24,10 @@ use Nette\Object;
  * @author Patrik Votočke
  * @author Dusan Hudak
  */
-class FilesPanel extends Object implements IBarPanel, IFilesFormatterLogger
+class FilesPanel implements IBarPanel, IFilesFormatterLogger
 {
+	use SmartObject;
+
 	/** @var array */
 	private $files = array();
 

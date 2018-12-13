@@ -11,7 +11,7 @@
 
 namespace NasExt\Templating;
 
-use Nette\Object;
+use Nette\SmartObject;
 use Nette\Utils\Strings;
 
 /**
@@ -20,8 +20,10 @@ use Nette\Utils\Strings;
  * @author Patrik Votoček
  * @author Dusan Hudak
  */
-class TemplateFilesFormatter extends Object implements ITemplateFilesFormatter
+class TemplateFilesFormatter implements ITemplateFilesFormatter
 {
+
+	use SmartObject;
 
 	const MODULE_SUFFIX = 'Module';
 
